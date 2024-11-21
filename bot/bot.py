@@ -529,6 +529,20 @@ class Bot(object):
             timeout=self.timeout_s
         )
 
+    def set_chats_avatar(self, chat_id, image):
+        request = Request(
+            method="GET",
+            url="{}/chats/avatar/set".format(self.api_base_url),
+            params={
+                "token": self.token,
+                "chatId": chat_id
+            }
+        )
+        if image:
+            request.method = "POST"
+            request.files = {"image": image}
+        return self.http_session.send(request.prepare(), timeout=self.timeout_s)
+
     def get_file_info(self, file_id):
         return self.http_session.get(
             url="{}/files/getInfo".format(self.api_base_url),
